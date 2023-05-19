@@ -12,7 +12,7 @@ class CreatePost extends Component
     use WithFileUploads;
     public bool $openCrear=false;
     public $imagen;
-    public string $titulo, $contenido, $category_id, $estado;
+    public string $titulo="", $contenido="", $estado="", $category_id="";
     
     protected function rules(): array{
         return [
@@ -34,6 +34,8 @@ class CreatePost extends Component
             '3'=>Deportes
         ]
         */
+        $categorias[-1]="______ Elige una categoría _______";
+        ksort($categorias);
         return view('livewire.create-post', compact('categorias'));
     }
 
@@ -48,7 +50,11 @@ class CreatePost extends Component
             'imagen'=>$rutaImagen,
             'user_id'=>auth()->user()->id
         ]);
-        $this->reset(['openCrear']);
+        $this->reset(['openCrear', 'imagen', 'titulo', 'contenido', 'estado', 'category_id']);
         $this->emitTo('show-posts', 'render');
+        $this->emit('mensaje', 'Post guardado con éxito.');
+    }
+    public function cerrar(){
+        $this->reset(['openCrear', 'imagen', 'titulo', 'estado', 'contenido', 'category_id']);
     }
 }

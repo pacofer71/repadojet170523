@@ -41,10 +41,10 @@
         <x-slot name="footer">
             <div class="flex flex-row-reverse">
                 <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    wire:click="guardar()">
+                    wire:click="guardar()" wire:loading.attr="disabled">
                     <i class="fas fa-save mr-2"></i>GUARDAR
                 </button>
-                <button class="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" wire:click="">
+                <button class="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" wire:click="cerrar()">
                     <i class="fas fa-xmark mr-2"></i>CANCELAR
                 </button>
 
