@@ -19,6 +19,11 @@
                         <x-nav-link href="{{ route('posts.show') }}" :active="request()->routeIs('posts.show')">
                             {{ __('Gestionar Posts') }}
                         </x-nav-link>
+                        @if(auth()->user()->is_admin)
+                        <x-nav-link href="{{route('categories.index')}}" :active="request()->routeIs('categories.*')">
+                            {{ __('Gestionar Categorias') }}
+                        </x-nav-link>
+                        @endif
                     @endauth
                 </div>
             </div>

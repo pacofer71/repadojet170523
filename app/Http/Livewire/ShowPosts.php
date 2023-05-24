@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Post;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -13,6 +14,7 @@ class ShowPosts extends Component
 {
     use WithPagination;
     use WithFileUploads;
+    use AuthorizesRequests;
 
     public string $campo='id', $orden='desc';
     public string $buscar="";
@@ -55,12 +57,14 @@ class ShowPosts extends Component
     }
 
     public function detalle(Post $post){
+        $this->authorize('view', $post);
         $this->miPost=$post;
         $this->openDetalle=true;
     }
     
     public function borrar(Post $post){
         //Borramos la imagen asociada al post
+        $this->authorize('delete', $post);
         Storage::delete($post->imagen);
         //Borro el registro de la bbdd
         $post->delete();
@@ -69,6 +73,7 @@ class ShowPosts extends Component
     }
 
     public function editar(Post $post){
+        $this->authorize('update', $post);
         $this->miPost=$post;
         $this->openEditar=true;
     }

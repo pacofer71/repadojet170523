@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Livewire\ShowPosts;
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
@@ -34,4 +36,12 @@ Route::middleware([
     })->name('dashboard');
     //metemos la ruta para ver posts porque la queremos protegida
     Route::get('posts', ShowPosts::class)->name('posts.show');
+});
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+    'is_admin'
+])->group(function () {
+    Route::resource('categories', CategoryController::class);
 });

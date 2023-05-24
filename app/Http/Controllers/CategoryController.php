@@ -12,7 +12,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $categories=Category::orderBy('nombre')->get();
+        return view('categories.index', compact('categories'));
     }
 
     /**
@@ -20,7 +21,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('categories.nueva');
     }
 
     /**
@@ -28,7 +29,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre'=>['required', 'string', 'min:3', 'unique:categories,nombre'],
+            'color'=>['required', 'regex:/#[A-Fa-f0-9]{6}/']
+        ]);
+        Category::create($request->all());
+        return redirect()->route('categories.index')->with('info', "Categoria Creada");
     }
 
     /**
@@ -44,7 +50,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('categories.edit', compact('category')); 
     }
 
     /**
@@ -52,7 +58,12 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'nombre'=>['required', 'string', 'min:3', 'unique:categories,nombre,'.$category->id],
+            'color'=>['required', 'regex:/#[A-Fa-f0-9]{6}/']
+        ]);
+        $category->update($request->all());
+        return redirect()->route('categories.index')->with('info', "Categoria Editada");
     }
 
     /**
@@ -60,6 +71,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('categories.index')->with('info', "Categoria Borrada");
     }
 }
