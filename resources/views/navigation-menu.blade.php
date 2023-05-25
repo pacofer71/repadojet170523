@@ -25,6 +25,9 @@
                         </x-nav-link>
                         @endif
                     @endauth
+                    <x-nav-link href="{{route('contacto.pintar')}}" :active="request()->routeIs('contacto.pintar')">
+                        {{ __('Contáctanos') }}
+                    </x-nav-link>
                 </div>
             </div>
 

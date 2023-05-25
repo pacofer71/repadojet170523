@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MailController;
 use App\Http\Livewire\ShowPosts;
 use App\Models\Category;
 use App\Models\Post;
@@ -45,3 +46,7 @@ Route::middleware([
 ])->group(function () {
     Route::resource('categories', CategoryController::class);
 });
+
+Route::get('contacto', [MailController::class, 'pintarFormulario'])->name('contacto.pintar');
+Route::post('contacto', [MailController::class, 'procesarFormulario'])->name('contacto.procesar');
+
