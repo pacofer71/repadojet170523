@@ -23,7 +23,8 @@ class ShowPosts extends Component
     public Post $miPost;
     
     protected $listeners=[
-        'render'
+        'render',
+        'borrarPost'=>'borrar'
     ];
 
     public function updatingBuscar(){
@@ -61,10 +62,15 @@ class ShowPosts extends Component
         $this->miPost=$post;
         $this->openDetalle=true;
     }
+
+    public function confirmar(Post $post){
+        $this->authorize('delete', $post);
+        $this->emit('permisoBorrar', $post->id);
+    }
     
     public function borrar(Post $post){
         //Borramos la imagen asociada al post
-        $this->authorize('delete', $post);
+       
         Storage::delete($post->imagen);
         //Borro el registro de la bbdd
         $post->delete();

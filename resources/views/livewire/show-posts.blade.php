@@ -58,7 +58,7 @@
                                 <button wire:click="editar('{{$item->id}}')" wire:loading.attr="disabled">
                                     <i class="fas fa-edit text-yellow-400"></i>
                                 </button>
-                                <button wire:click="borrar('{{$item->id}}')" wire:loading.attr="disabled">
+                                <button wire:click="confirmar('{{$item->id}}')" wire:loading.attr="disabled">
                                     <i class="fas fa-trash text-red-400"></i>
                                 </button>
                             </td>
