@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Socialite\GithubController;
 use App\Http\Controllers\MailController;
 use App\Http\Livewire\ShowPosts;
 use App\Models\Category;
@@ -37,7 +38,9 @@ Route::middleware([
     })->name('dashboard');
     //metemos la ruta para ver posts porque la queremos protegida
     Route::get('posts', ShowPosts::class)->name('posts.show');
+    
 });
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -49,4 +52,7 @@ Route::middleware([
 
 Route::get('contacto', [MailController::class, 'pintarFormulario'])->name('contacto.pintar');
 Route::post('contacto', [MailController::class, 'procesarFormulario'])->name('contacto.procesar');
+
+Route::get('/auth/github/redirect', [GithubController::class, 'redirect'])->name('github.redirect');
+Route::get('/auth/github/callback', [GithubController::class, 'callback'])->name('github.callback');
 

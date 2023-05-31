@@ -44,5 +44,9 @@
                 </x-button>
             </div>
         </form>
+        <div class="flex mt-4 items-center justify-center">
+            <a href="{{route('github.redirect')}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <i class="fa-brands fa-github"></i> Login con GitHub</a>
+        </div>
     </x-authentication-card>
 </x-guest-layout>
