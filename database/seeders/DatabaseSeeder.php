@@ -24,11 +24,12 @@ class DatabaseSeeder extends Seeder
         // ]);
         User::factory(10)->create();
         $this->call(CategorySeeder::class);
-
+        $this->call(TagSeeder::class);
+        
         Storage::deleteDirectory('imagenes');
         Storage::makeDirectory('imagenes');
 
-        Post::factory(60)->create();
+        $this->call(PostSeeder::class);
 
     }
 }

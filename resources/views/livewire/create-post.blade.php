@@ -16,6 +16,12 @@
                     <x-form-radio name="estado" value="BORRADOR" label="Borrador" />
                 </x-form-group>
                 <x-form-select name="category_id" :options="$categorias" label="Categoria del Post" />
+                <x-form-group name="tags" label="Etiquetas" inline>
+                    @foreach ($etiquetas as $id => $nombre)
+                        <x-form-checkbox name="tags" label="{{ $nombre }}" value="{{ $id }}" :show-errors="false" />
+                    @endforeach
+                </x-form-group>
+                
             @endwire
             <div class="mt-4">
                 <span class="text-gray-700">Imagen del Post</span>
@@ -44,7 +50,8 @@
                     wire:click="guardar()" wire:loading.attr="disabled">
                     <i class="fas fa-save mr-2"></i>GUARDAR
                 </button>
-                <button class="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" wire:click="cerrar()">
+                <button class="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    wire:click="cerrar()">
                     <i class="fas fa-xmark mr-2"></i>CANCELAR
                 </button>
 

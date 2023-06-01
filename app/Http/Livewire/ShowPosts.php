@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -21,6 +22,7 @@ class ShowPosts extends Component
     public bool $openDetalle=false, $openEditar=false;
     public $imagen;
     public Post $miPost;
+    public array $selectedTags=[];
     
     protected $listeners=[
         'render',
@@ -39,7 +41,10 @@ class ShowPosts extends Component
         ->orderBy($this->campo, $this->orden)
         ->paginate(5);
         $categorias=Category::orderBy('nombre')->pluck('nombre', 'id')->toArray();
-        return view('livewire.show-posts', compact('posts', 'categorias'));
+
+        
+        $etiquetas=Tag::orderBy('nombre')->pluck('nombre', 'id')->toArray();
+        return view('livewire.show-posts', compact('posts', 'categorias', 'etiquetas'));
     }
 
     protected function rules(): array{
@@ -48,7 +53,8 @@ class ShowPosts extends Component
             'miPost.contenido'=>['required', 'string', 'min:10'],
             'miPost.estado'=>['required', 'in:PUBLICADO,BORRADOR'],
             'miPost.category_id'=>['required', 'exists:categories,id'],
-            'imagen'=>['nullable', 'image', 'max:2048']
+            'imagen'=>['nullable', 'image', 'max:2048'],
+            'selectedTags'=>['required', 'exists:tags,id'],
         ];
     }
 
@@ -81,6 +87,9 @@ class ShowPosts extends Component
     public function editar(Post $post){
         $this->authorize('update', $post);
         $this->miPost=$post;
+
+        $this->selectedTags=$this->miPost->tags->pluck('id')->toArray();
+        
         $this->openEditar=true;
     }
 
@@ -100,6 +109,9 @@ class ShowPosts extends Component
             'estado'=>$this->miPost->estado,
             'imagen'=>$ruta,
         ]);
+        
+        $this->miPost->tags()->sync($this->selectedTags);
+
         $this->miPost=new Post;
         $this->reset(['openEditar', 'imagen']);
         $this->emit('mensaje', 'Post Editado');

@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -13,6 +14,7 @@ class CreatePost extends Component
     public bool $openCrear=false;
     public $imagen;
     public string $titulo="", $contenido="", $estado="", $category_id="";
+    public array $tags=[];
     
     protected function rules(): array{
         return [
@@ -20,7 +22,8 @@ class CreatePost extends Component
             'contenido'=>['required', 'string', 'min:10'],
             'estado'=>['required', 'in:PUBLICADO,BORRADOR'],
             'category_id'=>['required', 'exists:categories,id'],
-            'imagen'=>['required', 'image', 'max:2048']
+            'imagen'=>['required', 'image', 'max:2048'],
+            'tags'=>['required', 'exists:tags,id']
         ];
     }
 
@@ -35,14 +38,16 @@ class CreatePost extends Component
         ]
         */
         $categorias[-1]="______ Elige una categoría _______";
+        $etiquetas=Tag::orderBy('nombre')->pluck('nombre', 'id')->toArray();
+
         ksort($categorias);
-        return view('livewire.create-post', compact('categorias'));
+        return view('livewire.create-post', compact('categorias', 'etiquetas'));
     }
 
     public function guardar(){
         $this->validate();
         $rutaImagen=$this->imagen->store('imagenes');
-        Post::create([
+        $post=Post::create([
             'titulo'=>$this->titulo,
             'contenido'=>$this->contenido,
             'category_id'=>$this->category_id,
@@ -50,6 +55,8 @@ class CreatePost extends Component
             'imagen'=>$rutaImagen,
             'user_id'=>auth()->user()->id
         ]);
+        $post->tags()->attach($this->tags);
+
         $this->reset(['openCrear', 'imagen', 'titulo', 'contenido', 'estado', 'category_id']);
         $this->emitTo('show-posts', 'render');
         $this->emit('mensaje', 'Post guardado con éxito.');

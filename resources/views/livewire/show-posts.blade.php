@@ -96,6 +96,11 @@
                             "bg-green-400"=>$miPost->estado=="PUBLICADO",
                             ])>{{$miPost->estado}}</span>
                     </p>
+                    <div class="flex justify-around my-2">
+                        @foreach($miPost->tags as $tag)
+                        <span class="mx-2 my-2 rounded bg-gray-200">#{{$tag->nombre}}</span>
+                        @endforeach
+                    </div>
                     <p class="mb-6 font-normal text-gray-700 dark:text-gray-400">
                         Fecha última actualización: {{$miPost->updated_at->format('d/m/Y h:i:s')}}
                     </p>
@@ -126,6 +131,11 @@
                     <x-form-radio name="miPost.estado" value="BORRADOR" label="Borrador" />
                 </x-form-group>
                 <x-form-select name="miPost.category_id" :options="$categorias" label="Categoria del Post" />
+                <x-form-group name="selectedTags[]" label="Etiquetas" inline>
+                    @foreach ($etiquetas as $id => $nombre)
+                        <x-form-checkbox name="tags" label="{{ $nombre }}" value="{{ $id }}" :wire=false :show-errors="false" wire:model='selectedTags' />
+                    @endforeach
+                </x-form-group>
             @endwire
             <div class="mt-4">
                 <span class="text-gray-700">Imagen del Post</span>

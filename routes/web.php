@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Socialite\GithubController;
 use App\Http\Controllers\MailController;
+use App\Http\Controllers\TagController;
 use App\Http\Livewire\ShowPosts;
 use App\Models\Category;
 use App\Models\Post;
@@ -48,6 +49,7 @@ Route::middleware([
     'is_admin'
 ])->group(function () {
     Route::resource('categories', CategoryController::class);
+    Route::resource('tags', TagController::class);
 });
 
 Route::get('contacto', [MailController::class, 'pintarFormulario'])->name('contacto.pintar');

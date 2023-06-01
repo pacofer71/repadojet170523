@@ -23,6 +23,9 @@
                         <x-nav-link href="{{route('categories.index')}}" :active="request()->routeIs('categories.*')">
                             {{ __('Gestionar Categorias') }}
                         </x-nav-link>
+                        <x-nav-link href="{{route('tags.index')}}" :active="request()->routeIs('tags.*')">
+                            {{ __('Gestionar Etiquetas') }}
+                        </x-nav-link>
                         @endif
                     @endauth
                     <x-nav-link href="{{route('contacto.pintar')}}" :active="request()->routeIs('contacto.pintar')">
